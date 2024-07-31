@@ -1,55 +1,16 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
-import os
+from app import db
+from models import Event, Task, Resource, Expense
 
-app = Flask(__name__)
+api = Blueprint('api', __name__)
 
-# Configuration
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_secret_key')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', 'sqlite:///database.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')
+# Event Routes
 
-db = SQLAlchemy(app)
-jwt = JWTManager(app)
-
-@app.route('/')
-def index():
-    return "Welcome to the Event Planner App API!"
-
-# Additional routes here...
-
-
-# Additional routes here...
-
-
-@app.route('/auth/register', methods=['POST'])
-def register():
-    from models import User
-    data = request.get_json()
-    hashed_password = generate_password_hash(data['password'], method='sha256')
-    new_user = User(username=data['username'], email=data['email'], password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({'message': 'User registered successfully'})
-
-@app.route('/auth/login', methods=['POST'])
-def login():
-    from models import User
-    data = request.get_json()
-    user = User.query.filter_by(email=data['email']).first()
-    if user and check_password_hash(user.password, data['password']):
-        token = create_access_token(identity=user.id)
-        return jsonify({'token': token})
-    return jsonify({'message': 'Invalid credentials'}), 401
-
-@app.route('/events', methods=['POST'])
+@api.route('/events', methods=['POST'])
 @jwt_required()
 def create_event():
-    from models import Event
     data = request.get_json()
     user_id = get_jwt_identity()
     new_event = Event(
@@ -61,12 +22,11 @@ def create_event():
     )
     db.session.add(new_event)
     db.session.commit()
-    return jsonify({'message': 'Event created successfully'})
+    return jsonify({'message': 'Event created successfully'}), 201
 
-@app.route('/events', methods=['GET'])
+@api.route('/events', methods=['GET'])
 @jwt_required()
 def get_events():
-    from models import Event
     user_id = get_jwt_identity()
     events = Event.query.filter_by(created_by=user_id).all()
     return jsonify([{
@@ -77,10 +37,9 @@ def get_events():
         'description': event.description
     } for event in events])
 
-@app.route('/events/<int:event_id>', methods=['PUT'])
+@api.route('/events/<int:event_id>', methods=['PUT'])
 @jwt_required()
 def update_event(event_id):
-    from models import Event
     data = request.get_json()
     event = Event.query.get(event_id)
     if not event:
@@ -93,10 +52,9 @@ def update_event(event_id):
     db.session.commit()
     return jsonify({'message': 'Event updated successfully'})
 
-@app.route('/events/<int:event_id>', methods=['DELETE'])
+@api.route('/events/<int:event_id>', methods=['DELETE'])
 @jwt_required()
 def delete_event(event_id):
-    from models import Event
     event = Event.query.get(event_id)
     if not event:
         return jsonify({'message': 'Event not found'}), 404
@@ -105,10 +63,11 @@ def delete_event(event_id):
     db.session.commit()
     return jsonify({'message': 'Event deleted successfully'})
 
-@app.route('/tasks', methods=['POST'])
+# Task Routes
+
+@api.route('/tasks', methods=['POST'])
 @jwt_required()
 def create_task():
-    from models import Task
     data = request.get_json()
     new_task = Task(
         title=data['title'],
@@ -121,12 +80,11 @@ def create_task():
     )
     db.session.add(new_task)
     db.session.commit()
-    return jsonify({'message': 'Task created successfully'})
+    return jsonify({'message': 'Task created successfully'}), 201
 
-@app.route('/tasks/<int:task_id>', methods=['PUT'])
+@api.route('/tasks/<int:task_id>', methods=['PUT'])
 @jwt_required()
 def update_task(task_id):
-    from models import Task
     data = request.get_json()
     task = Task.query.get(task_id)
     if not task:
@@ -140,10 +98,9 @@ def update_task(task_id):
     db.session.commit()
     return jsonify({'message': 'Task updated successfully'})
 
-@app.route('/tasks/<int:task_id>', methods=['DELETE'])
+@api.route('/tasks/<int:task_id>', methods=['DELETE'])
 @jwt_required()
 def delete_task(task_id):
-    from models import Task
     task = Task.query.get(task_id)
     if not task:
         return jsonify({'message': 'Task not found'}), 404
@@ -152,10 +109,11 @@ def delete_task(task_id):
     db.session.commit()
     return jsonify({'message': 'Task deleted successfully'})
 
-@app.route('/resources', methods=['POST'])
+# Resource Routes
+
+@api.route('/resources', methods=['POST'])
 @jwt_required()
 def create_resource():
-    from models import Resource
     data = request.get_json()
     new_resource = Resource(
         name=data['name'],
@@ -166,12 +124,11 @@ def create_resource():
     )
     db.session.add(new_resource)
     db.session.commit()
-    return jsonify({'message': 'Resource created successfully'})
+    return jsonify({'message': 'Resource created successfully'}), 201
 
-@app.route('/resources/<int:resource_id>', methods=['PUT'])
+@api.route('/resources/<int:resource_id>', methods=['PUT'])
 @jwt_required()
 def update_resource(resource_id):
-    from models import Resource
     data = request.get_json()
     resource = Resource.query.get(resource_id)
     if not resource:
@@ -184,10 +141,9 @@ def update_resource(resource_id):
     db.session.commit()
     return jsonify({'message': 'Resource updated successfully'})
 
-@app.route('/resources/<int:resource_id>', methods=['DELETE'])
+@api.route('/resources/<int:resource_id>', methods=['DELETE'])
 @jwt_required()
 def delete_resource(resource_id):
-    from models import Resource
     resource = Resource.query.get(resource_id)
     if not resource:
         return jsonify({'message': 'Resource not found'}), 404
@@ -196,10 +152,11 @@ def delete_resource(resource_id):
     db.session.commit()
     return jsonify({'message': 'Resource deleted successfully'})
 
-@app.route('/expenses', methods=['POST'])
+# Expense Routes
+
+@api.route('/expenses', methods=['POST'])
 @jwt_required()
 def create_expense():
-    from models import Expense
     data = request.get_json()
     new_expense = Expense(
         amount=data['amount'],
@@ -208,12 +165,11 @@ def create_expense():
     )
     db.session.add(new_expense)
     db.session.commit()
-    return jsonify({'message': 'Expense recorded successfully'})
+    return jsonify({'message': 'Expense recorded successfully'}), 201
 
-@app.route('/expenses/<int:expense_id>', methods=['PUT'])
+@api.route('/expenses/<int:expense_id>', methods=['PUT'])
 @jwt_required()
 def update_expense(expense_id):
-    from models import Expense
     data = request.get_json()
     expense = Expense.query.get(expense_id)
     if not expense:
@@ -224,10 +180,9 @@ def update_expense(expense_id):
     db.session.commit()
     return jsonify({'message': 'Expense updated successfully'})
 
-@app.route('/expenses/<int:expense_id>', methods=['DELETE'])
+@api.route('/expenses/<int:expense_id>', methods=['DELETE'])
 @jwt_required()
 def delete_expense(expense_id):
-    from models import Expense
     expense = Expense.query.get(expense_id)
     if not expense:
         return jsonify({'message': 'Expense not found'}), 404
@@ -235,6 +190,3 @@ def delete_expense(expense_id):
     db.session.delete(expense)
     db.session.commit()
     return jsonify({'message': 'Expense deleted successfully'})
-
-if __name__ == "__main__":
-    app.run(port=5555, debug=True)
