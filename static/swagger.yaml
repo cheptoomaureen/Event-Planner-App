@@ -1,0 +1,872 @@
+openapi: 3.0.0
+info:
+  title: Event Planner App API
+  description: API documentation for the Event Planner App.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5555
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      description: Register a new user by providing a username, email, and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+      responses:
+        200:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /auth/login:
+    post:
+      summary: User login
+      description: Login a user by providing an email and password. Returns a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        200:
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        401:
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /events:
+    post:
+      summary: Create a new event
+      description: Create a new event by providing the necessary event details. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                date:
+                  type: string
+                  format: date-time
+                location:
+                  type: string
+                description:
+                  type: string
+              required:
+                - title
+                - date
+                - location
+      responses:
+        200:
+          description: Event created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      summary: Get list of events
+      description: Retrieve a list of events created by the authenticated user. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                    location:
+                      type: string
+                    description:
+                      type: string
+  /events/{event_id}:
+    get:
+      summary: Get an event by ID
+      description: Retrieve an event by its ID. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Event details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  date:
+                    type: string
+                    format: date-time
+                  location:
+                    type: string
+                  description:
+                    type: string
+        404:
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    put:
+      summary: Update an event
+      description: Update an existing event by providing updated details. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                date:
+                  type: string
+                  format: date-time
+                location:
+                  type: string
+                description:
+                  type: string
+              required:
+                - title
+                - date
+                - location
+      responses:
+        200:
+          description: Event updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    delete:
+      summary: Delete an event
+      description: Delete an existing event. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Event deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /tasks:
+    post:
+      summary: Create a new task
+      description: Create a new task for an event. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                deadline:
+                  type: string
+                  format: date-time
+                priority:
+                  type: string
+                status:
+                  type: string
+                event_id:
+                  type: integer
+                assigned_to:
+                  type: string
+              required:
+                - title
+                - deadline
+                - priority
+                - event_id
+                - assigned_to
+      responses:
+        200:
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      summary: Get list of tasks
+      description: Retrieve a list of tasks for the authenticated user. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    deadline:
+                      type: string
+                      format: date-time
+                    priority:
+                      type: string
+                    status:
+                      type: string
+                    event_id:
+                      type: integer
+                    assigned_to:
+                      type: string
+  /tasks/{task_id}:
+    get:
+      summary: Get a task by ID
+      description: Retrieve a task by its ID. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: task_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Task details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  deadline:
+                    type: string
+                    format: date-time
+                  priority:
+                    type: string
+                  status:
+                    type: string
+                  event_id:
+                    type: integer
+                  assigned_to:
+                    type: string
+        404:
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    put:
+      summary: Update a task
+      description: Update an existing task. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: task_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                deadline:
+                  type: string
+                  format: date-time
+                priority:
+                  type: string
+                status:
+                  type: string
+              required:
+                - title
+                - deadline
+                - priority
+      responses:
+        200:
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    delete:
+      summary: Delete a task
+      description: Delete an existing task. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: task_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /resources:
+    post:
+      summary: Create a new resource
+      description: Create a new resource for an event. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                status:
+                  type: string
+                event_id:
+                  type: integer
+                reserved_by:
+                  type: string
+              required:
+                - name
+                - type
+                - status
+                - event_id
+      responses:
+        200:
+          description: Resource created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      summary: Get list of resources
+      description: Retrieve a list of resources for the authenticated user. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of resources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    status:
+                      type: string
+                    event_id:
+                      type: integer
+                    reserved_by:
+                      type: string
+  /resources/{resource_id}:
+    get:
+      summary: Get a resource by ID
+      description: Retrieve a resource by its ID. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: resource_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Resource details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  status:
+                    type: string
+                  event_id:
+                    type: integer
+                  reserved_by:
+                    type: string
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    put:
+      summary: Update a resource
+      description: Update an existing resource. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: resource_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                status:
+                  type: string
+                reserved_by:
+                  type: string
+              required:
+                - name
+                - type
+                - status
+      responses:
+        200:
+          description: Resource updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    delete:
+      summary: Delete a resource
+      description: Delete an existing resource. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: resource_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Resource deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /expenses:
+    post:
+      summary: Record a new expense
+      description: Record a new expense for an event. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                description:
+                  type: string
+                event_id:
+                  type: integer
+              required:
+                - amount
+                - event_id
+      responses:
+        200:
+          description: Expense recorded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      summary: Get list of expenses
+      description: Retrieve a list of expenses for the authenticated user. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of expenses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    amount:
+                      type: number
+                    description:
+                      type: string
+                    event_id:
+                      type: integer
+  /expenses/{expense_id}:
+    get:
+      summary: Get an expense by ID
+      description: Retrieve an expense by its ID. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: expense_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Expense details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  amount:
+                    type: number
+                  description:
+                    type: string
+                  event_id:
+                    type: integer
+        404:
+          description: Expense not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    put:
+      summary: Update an expense
+      description: Update an existing expense. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: expense_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                description:
+                  type: string
+              required:
+                - amount
+      responses:
+        200:
+          description: Expense updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Expense not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    delete:
+      summary: Delete an expense
+      description: Delete an existing expense. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: expense_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Expense deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: Expense not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /notifications:
+    post:
+      summary: Create a new notification
+      description: Create a new notification. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                message:
+                  type: string
+              required:
+                - title
+                - message
+      responses:
+        200:
+          description: Notification created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      summary: Get list of notifications
+      description: Retrieve a list of notifications for the authenticated user. Requires JWT authentication.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    message:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
