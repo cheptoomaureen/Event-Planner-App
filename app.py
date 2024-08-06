@@ -5,10 +5,11 @@ from flasgger import Swagger, swag_from
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask.json import JSONEncoder
 from datetime import datetime
 import os
 import logging
+from flask.json.provider import DefaultJSONProvider
+JSONEncoder = DefaultJSONProvider
 
 app = Flask(__name__)
 
