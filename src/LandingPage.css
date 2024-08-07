@@ -1,0 +1,39 @@
+.landing-container {
+    text-align: center;
+    background-color: black;
+    color: sienna;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .header {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .landing-button {
+    background-color: sienna;
+    color: black;
+    padding: 15px 30px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  
+  .landing-button:hover {
+    background-color: #cc7a3d;
+  }
+  
+  .footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    color: sienna;
+  }
+  
