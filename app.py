@@ -1,371 +1,242 @@
-from flask import Flask, request, jsonify
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from werkzeug.security import generate_password_hash, check_password_hash
-from flasgger import Swagger, swag_from
-from flask_swagger_ui import get_swaggerui_blueprint
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from datetime import datetime
-import os
 import logging
-from flask.json.provider import DefaultJSONProvider
-JSONEncoder = DefaultJSONProvider
+from flask import Flask, request, jsonify
+from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
+from flask_cors import CORS
+from models import db, User, Event, Task, Resource, Expense, Notification
+from datetime import timedelta, datetime
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///database.db")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "your_jwt_secret_key")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=1)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "your_secret_key")
 
-# Configuration
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_secret_key')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', 'sqlite:///database.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')
-app.config['SWAGGER'] = {
-    'title': 'Event Planner App API',
-    'uiversion': 3
-}
-
-db = SQLAlchemy(app)  # Initialize db with the app
-migrate = Migrate(app, db)  # Initialize Flask-Migrate with the app
+db.init_app(app)
+migrate = Migrate(app, db)
+bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-swagger = Swagger(app)
 
-# Logging
-logging.basicConfig(filename="app.log", level=logging.INFO)
+log_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
 
-# Routes and handlers
+file_handler = logging.FileHandler("app.log")
+file_handler.setFormatter(log_formatter)
+file_handler.setLevel(logging.INFO)
 
-@app.route('/')
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(log_formatter)
+console_handler.setLevel(logging.INFO)
+
+app.logger.addHandler(file_handler)
+app.logger.addHandler(console_handler)
+app.logger.setLevel(logging.INFO)
+
+app.logger.info('App startup')
+
+@app.route("/")
 def index():
-    return "Welcome to the Event Planner App API!"
+    app.logger.info('Index page accessed')
+    return "<h1>Event Planner</h1>"
 
-@app.route('/auth/register', methods=['POST'])
-@swag_from({
-    'summary': 'Register a new user',
-    'description': 'This endpoint registers a new user with a username, email, and password.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'username': {'type': 'string'},
-                    'email': {'type': 'string'},
-                    'password': {'type': 'string'}
-                },
-                'required': ['username', 'email', 'password']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'User registered successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@app.route("/auth/register", methods=["POST"])
 def register():
-    from models import User  # Inline import to avoid circular dependency
     data = request.get_json()
-    hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
+    hashed_password = bcrypt.generate_password_hash(data['password']).decode("utf-8")
     new_user = User(username=data['username'], email=data['email'], password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
-    logging.info(f"User registered: {new_user.username}")
+    app.logger.info(f"User registered: {new_user.username}")
     return jsonify({'message': 'User registered successfully'})
 
-@app.route('/auth/login', methods=['POST'])
-@swag_from({
-    'summary': 'User login',
-    'description': 'This endpoint allows a user to login with an email and password.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'email': {'type': 'string'},
-                    'password': {'type': 'string'}
-                },
-                'required': ['email', 'password']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'User logged in successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'token': {'type': 'string'}
-                }
-            }
-        },
-        401: {
-            'description': 'Invalid credentials',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@app.route("/auth/login", methods=["POST"])
 def login():
-    from models import User  # Inline import to avoid circular dependency
     data = request.get_json()
     user = User.query.filter_by(email=data['email']).first()
-    if user and check_password_hash(user.password, data['password']):
+    if user and bcrypt.check_password_hash(user.password, data['password']):
         token = create_access_token(identity=user.id)
-        logging.info(f"User logged in: {user.username}")
+        app.logger.info(f"User logged in: {user.username}")
         return jsonify({'token': token})
+    app.logger.warning(f'Failed login attempt for {data["email"]}')
     return jsonify({'message': 'Invalid credentials'}), 401
 
-@app.route('/events', methods=['POST'])
+@app.route("/auth/current_user", methods=["GET"])
+@jwt_required(optional=True)
+def get_current_user():
+    current_user_id = get_jwt_identity()
+    if current_user_id:
+        current_user = User.query.get(current_user_id)
+        if current_user:
+            app.logger.info(f'Current user {current_user.email} fetched')
+            return jsonify({"id": current_user.id, "username": current_user.username, "email": current_user.email}), 200
+    app.logger.warning('User not found')
+    return jsonify({"error": "User not found"}), 404
+
+BLACKLIST = set()
+
+@jwt.token_in_blocklist_loader
+def check_if_token_in_blocklist(jwt_header, decrypted_token):
+    return decrypted_token['jti'] in BLACKLIST
+
+@app.route("/auth/logout", methods=["POST"])
 @jwt_required()
-@swag_from({
-    'summary': 'Create a new event',
-    'description': 'This endpoint allows a user to create a new event.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'title': {'type': 'string'},
-                    'date': {'type': 'string', 'format': 'date-time'},
-                    'location': {'type': 'string'},
-                    'description': {'type': 'string'}
-                },
-                'required': ['title', 'date', 'location']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Event created successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
-def create_event():
-    from models import Event  # Inline import to avoid circular dependency
+def logout():
+    jti = get_jwt()["jti"]
+    BLACKLIST.add(jti)
+    app.logger.info('User logged out')
+    return jsonify({"success": "Successfully logged out"}), 200
+
+@app.route('/users', methods=['POST'])
+def create_user():
     data = request.get_json()
-    user_id = get_jwt_identity()
+    new_user = User(username=data['username'], email=data['email'], password=bcrypt.generate_password_hash(data['password']).decode("utf-8"))
+    db.session.add(new_user)
+    db.session.commit()
+    app.logger.info(f'User {new_user.email} created successfully')
+    return jsonify({'success': 'User created successfully'}), 201
+
+@app.route('/users', methods=['GET'])
+def get_all_users():
+    users = User.query.all()
+    app.logger.info('Fetched all users')
+    return jsonify([{
+        'id': user.id,
+        'username': user.username,
+        'email': user.email
+    } for user in users]), 200
+
+@app.route('/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = User.query.get_or_404(user_id)
+    app.logger.info(f'User {user.email} fetched')
+    return jsonify({'id': user.id, 'username': user.username, 'email': user.email})
+
+@app.route('/users/<int:user_id>', methods=['PUT'])
+@jwt_required(optional=True)
+def update_user(user_id):
+    user = User.query.get_or_404(user_id)
+    data = request.get_json()
+
+    if 'username' in data:
+        user.username = data['username']
+    if 'email' in data:
+        user.email = data['email']
+    if 'password' in data:
+        user.password = bcrypt.generate_password_hash(data['password']).decode("utf-8")
+
+    db.session.commit()
+    app.logger.info(f'User {user.email} updated successfully')
+    return jsonify({'message': 'User updated successfully'})
+
+@app.route('/users/<int:user_id>', methods=['DELETE'])
+@jwt_required(optional=True)
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    app.logger.info(f'User {user.email} deleted')
+    return jsonify({'message': 'User deleted successfully'}), 200
+
+@app.route('/events', methods=['POST'])
+@jwt_required(optional=True)
+def create_event():
+    data = request.get_json()
+    current_user_id = get_jwt_identity()
+
+    try:
+        event_date = datetime.fromisoformat(data['date'])
+    except ValueError:
+        app.logger.warning('Invalid date format')
+        return jsonify({'message': 'Invalid date format. Use ISO 8601 format.'}), 400
+
     new_event = Event(
         title=data['title'],
-        date=datetime.strptime(data['date'], '%Y-%m-%dT%H:%M:%S'),
+        date=event_date,
         location=data['location'],
         description=data.get('description', ''),
-        created_by=user_id
+        created_by=current_user_id
     )
+
     db.session.add(new_event)
     db.session.commit()
-    logging.info(f"Event created: {new_event.title} by user {user_id}")
-    return jsonify({'message': 'Event created successfully'})
+    app.logger.info(f'Event {new_event.title} created successfully')
+    return jsonify({'message': 'Event created successfully'}), 201
 
 @app.route('/events', methods=['GET'])
-@jwt_required()
-@swag_from({
-    'summary': 'Get list of events',
-    'description': 'This endpoint returns a list of events created by the authenticated user.',
-    'produces': ['application/json'],
-    'responses': {
-        200: {
-            'description': 'List of events',
-            'schema': {
-                'type': 'array',
-                'items': {
-                    'type': 'object',
-                    'properties': {
-                        'id': {'type': 'integer'},
-                        'title': {'type': 'string'},
-                        'date': {'type': 'string', 'format': 'date-time'},
-                        'location': {'type': 'string'},
-                        'description': {'type': 'string'}
-                    }
-                }
-            }
+@jwt_required(optional=True)
+def get_all_events():
+    events = Event.query.all()
+    app.logger.info('Fetched all events')
+    return jsonify([
+        {
+            'id': event.id,
+            'title': event.title,
+            'date': event.date.isoformat(),
+            'location': event.location,
+            'description': event.description
         }
-    }
-})
-def get_events():
-    from models import Event  # Inline import to avoid circular dependency
-    user_id = get_jwt_identity()
-    events = Event.query.filter_by(created_by=user_id).all()
-    return jsonify([{
+        for event in events
+    ]), 200
+
+@app.route('/events/<int:id>', methods=['GET'])
+def get_event(id):
+    event = Event.query.get_or_404(id)
+    app.logger.info(f'Event {event.title} fetched')
+    return jsonify({
         'id': event.id,
         'title': event.title,
         'date': event.date.isoformat(),
         'location': event.location,
         'description': event.description
-    } for event in events])
+    }), 200
 
-@app.route('/events/<int:event_id>', methods=['PUT'])
-@jwt_required()
-@swag_from({
-    'summary': 'Update an event',
-    'description': 'This endpoint updates an existing event.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'title': {'type': 'string'},
-                    'date': {'type': 'string', 'format': 'date-time'},
-                    'location': {'type': 'string'},
-                    'description': {'type': 'string'}
-                },
-                'required': ['title', 'date', 'location']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Event updated successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        },
-        404: {
-            'description': 'Event not found',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
-def update_event(event_id):
-    from models import Event  # Inline import to avoid circular dependency
+@app.route('/events/<int:id>', methods=['PUT'])
+@jwt_required(optional=True)
+def update_event(id):
     data = request.get_json()
-    event = Event.query.get(event_id)
-    if not event:
-        return jsonify({'message': 'Event not found'}), 404
+    event = Event.query.get_or_404(id)
 
-    event.title = data['title']
-    event.date = datetime.strptime(data['date'], '%Y-%m-%dT%H:%M:%S')
-    event.location = data['location']
+    event.title = data.get('title', event.title)
+    try:
+        event.date = datetime.fromisoformat(data.get('date', event.date.isoformat()))
+    except ValueError:
+        return jsonify({'message': 'Invalid date format. Use ISO 8601 format.'}), 400
+    event.location = data.get('location', event.location)
     event.description = data.get('description', event.description)
+
     db.session.commit()
-    logging.info(f"Event updated: {event.title} by user {get_jwt_identity()}")
-    return jsonify({'message': 'Event updated successfully'})
+    app.logger.info(f'Event {event.title} updated successfully')
+    return jsonify({'message': 'Event updated successfully'}), 200
 
-@app.route('/events/<int:event_id>', methods=['DELETE'])
-@jwt_required()
-@swag_from({
-    'summary': 'Delete an event',
-    'description': 'This endpoint deletes an existing event.',
-    'produces': ['application/json'],
-    'responses': {
-        200: {
-            'description': 'Event deleted successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        },
-        404: {
-            'description': 'Event not found',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
-def delete_event(event_id):
-    from models import Event  # Inline import to avoid circular dependency
-    event = Event.query.get(event_id)
-    if not event:
-        return jsonify({'message': 'Event not found'}), 404
-
+@app.route('/events/<int:id>', methods=['DELETE'])
+@jwt_required(optional=True)
+def delete_event(id):
+    event = Event.query.get_or_404(id)
     db.session.delete(event)
     db.session.commit()
-    logging.info(f"Event deleted: {event.title} by user {get_jwt_identity()}")
-    return jsonify({'message': 'Event deleted successfully'})
+    app.logger.info(f'Event {event.title} deleted')
+    return jsonify({'message': 'Event deleted successfully'}), 200
 
 @app.route('/tasks', methods=['POST'])
-@jwt_required()
-@swag_from({
-    'summary': 'Create a new task',
-    'description': 'This endpoint allows a user to create a new task for an event.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'title': {'type': 'string'},
-                    'description': {'type': 'string'},
-                    'deadline': {'type': 'string', 'format': 'date-time'},
-                    'priority': {'type': 'string'},
-                    'status': {'type': 'string'},
-                    'event_id': {'type': 'integer'},
-                    'assigned_to': {'type': 'string'}
-                },
-                'required': ['title', 'deadline', 'priority', 'event_id', 'assigned_to']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Task created successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def create_task():
-    from models import Task  # Inline import to avoid circular dependency
     data = request.get_json()
+    try:
+        deadline = datetime.fromisoformat(data['deadline'])
+    except ValueError:
+        return jsonify({'message': 'Invalid datetime format. Use ISO 8601 format.'}), 400
+
     new_task = Task(
         title=data['title'],
         description=data.get('description', ''),
-        deadline=datetime.strptime(data['deadline'], '%Y-%m-%dT%H:%M:%S'),
+        deadline=deadline,
         priority=data['priority'],
         status=data.get('status', 'Pending'),
         event_id=data['event_id'],
@@ -373,148 +244,74 @@ def create_task():
     )
     db.session.add(new_task)
     db.session.commit()
-    logging.info(f"Task created: {new_task.title}")
-    return jsonify({'message': 'Task created successfully'})
+    app.logger.info(f"Task {new_task.title} created successfully")
+    return jsonify({'message': 'Task created successfully'}), 201
+
+@app.route('/tasks', methods=['GET'])
+@jwt_required(optional=True)
+def get_all_tasks():
+    tasks = Task.query.all()
+    app.logger.info('Fetched all tasks')
+    return jsonify([
+        {
+            'id': task.id,
+            'title': task.title,
+            'description': task.description,
+            'deadline': task.deadline.isoformat(),
+            'priority': task.priority,
+            'status': task.status,
+            'event_id': task.event_id,
+            'assigned_to': task.assigned_to
+        }
+        for task in tasks
+    ]), 200
+
+@app.route('/tasks/<int:task_id>', methods=['GET'])
+def get_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    app.logger.info(f'Task {task.title} fetched')
+    return jsonify({
+        'id': task.id,
+        'title': task.title,
+        'description': task.description,
+        'deadline': task.deadline.isoformat(),
+        'priority': task.priority,
+        'status': task.status,
+        'event_id': task.event_id,
+        'assigned_to': task.assigned_to
+    }), 200
 
 @app.route('/tasks/<int:task_id>', methods=['PUT'])
-@jwt_required()
-@swag_from({
-    'summary': 'Update a task',
-    'description': 'This endpoint updates an existing task.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'title': {'type': 'string'},
-                    'description': {'type': 'string'},
-                    'deadline': {'type': 'string', 'format': 'date-time'},
-                    'priority': {'type': 'string'},
-                    'status': {'type': 'string'}
-                },
-                'required': ['title', 'deadline', 'priority']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Task updated successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        },
-        404: {
-            'description': 'Task not found',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def update_task(task_id):
-    from models import Task  # Inline import to avoid circular dependency
     data = request.get_json()
-    task = Task.query.get(task_id)
-    if not task:
-        return jsonify({'message': 'Task not found'}), 404
+    task = Task.query.get_or_404(task_id)
+    try:
+        task.deadline = datetime.fromisoformat(data.get('deadline', task.deadline.isoformat()))
+    except ValueError:
+        return jsonify({'message': 'Invalid datetime format. Use ISO 8601 format.'}), 400
 
-    task.title = data['title']
+    task.title = data.get('title', task.title)
     task.description = data.get('description', task.description)
-    task.deadline = datetime.strptime(data['deadline'], '%Y-%m-%dT%H:%M:%S')
-    task.priority = data['priority']
+    task.priority = data.get('priority', task.priority)
     task.status = data.get('status', task.status)
+    
     db.session.commit()
-    logging.info(f"Task updated: {task.title}")
-    return jsonify({'message': 'Task updated successfully'})
+    app.logger.info(f"Task {task.title} updated successfully")
+    return jsonify({'message': 'Task updated successfully'}), 200
 
 @app.route('/tasks/<int:task_id>', methods=['DELETE'])
-@jwt_required()
-@swag_from({
-    'summary': 'Delete a task',
-    'description': 'This endpoint deletes an existing task.',
-    'produces': ['application/json'],
-    'responses': {
-        200: {
-            'description': 'Task deleted successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        },
-        404: {
-            'description': 'Task not found',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def delete_task(task_id):
-    from models import Task  # Inline import to avoid circular dependency
-    task = Task.query.get(task_id)
-    if not task:
-        return jsonify({'message': 'Task not found'}), 404
-
+    task = Task.query.get_or_404(task_id)
     db.session.delete(task)
     db.session.commit()
-    logging.info(f"Task deleted: {task.title}")
-    return jsonify({'message': 'Task deleted successfully'})
+    app.logger.info(f"Task {task.title} deleted successfully")
+    return jsonify({'message': 'Task deleted successfully'}), 200
 
 @app.route('/resources', methods=['POST'])
-@jwt_required()
-@swag_from({
-    'summary': 'Create a new resource',
-    'description': 'This endpoint allows a user to create a new resource for an event.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'name': {'type': 'string'},
-                    'type': {'type': 'string'},
-                    'status': {'type': 'string'},
-                    'event_id': {'type': 'integer'},
-                    'reserved_by': {'type': 'string'}
-                },
-                'required': ['name', 'type', 'status', 'event_id']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Resource created successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def create_resource():
-    from models import Resource  # Inline import to avoid circular dependency
     data = request.get_json()
     new_resource = Resource(
         name=data['name'],
@@ -525,144 +322,64 @@ def create_resource():
     )
     db.session.add(new_resource)
     db.session.commit()
-    logging.info(f"Resource created: {new_resource.name}")
-    return jsonify({'message': 'Resource created successfully'})
+    app.logger.info(f"Resource {new_resource.name} created successfully")
+    return jsonify({'message': 'Resource created successfully'}), 201
+
+@app.route('/resources', methods=['GET'])
+@jwt_required(optional=True)
+def get_all_resources():
+    resources = Resource.query.all()
+    app.logger.info('Fetched all resources')
+    return jsonify([
+        {
+            'id': resource.id,
+            'name': resource.name,
+            'type': resource.type,
+            'status': resource.status,
+            'event_id': resource.event_id,
+            'reserved_by': resource.reserved_by
+        }
+        for resource in resources
+    ]), 200
+
+@app.route('/resources/<int:resource_id>', methods=['GET'])
+def get_resource(resource_id):
+    resource = Resource.query.get_or_404(resource_id)
+    app.logger.info(f'Resource {resource.name} fetched')
+    return jsonify({
+        'id': resource.id,
+        'name': resource.name,
+        'type': resource.type,
+        'status': resource.status,
+        'event_id': resource.event_id,
+        'reserved_by': resource.reserved_by
+    }), 200
 
 @app.route('/resources/<int:resource_id>', methods=['PUT'])
-@jwt_required()
-@swag_from({
-    'summary': 'Update a resource',
-    'description': 'This endpoint updates an existing resource.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'name': {'type': 'string'},
-                    'type': {'type': 'string'},
-                    'status': {'type': 'string'},
-                    'reserved_by': {'type': 'string'}
-                },
-                'required': ['name', 'type', 'status']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Resource updated successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        },
-        404: {
-            'description': 'Resource not found',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def update_resource(resource_id):
-    from models import Resource  # Inline import to avoid circular dependency
     data = request.get_json()
-    resource = Resource.query.get(resource_id)
-    if not resource:
-        return jsonify({'message': 'Resource not found'}), 404
-
-    resource.name = data['name']
-    resource.type = data['type']
-    resource.status = data['status']
+    resource = Resource.query.get_or_404(resource_id)
+    resource.name = data.get('name', resource.name)
+    resource.type = data.get('type', resource.type)
+    resource.status = data.get('status', resource.status)
     resource.reserved_by = data.get('reserved_by', resource.reserved_by)
     db.session.commit()
-    logging.info(f"Resource updated: {resource.name}")
-    return jsonify({'message': 'Resource updated successfully'})
+    app.logger.info(f"Resource {resource.name} updated successfully")
+    return jsonify({'message': 'Resource updated successfully'}), 200
 
 @app.route('/resources/<int:resource_id>', methods=['DELETE'])
-@jwt_required()
-@swag_from({
-    'summary': 'Delete a resource',
-    'description': 'This endpoint deletes an existing resource.',
-    'produces': ['application/json'],
-    'responses': {
-        200: {
-            'description': 'Resource deleted successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        },
-        404: {
-            'description': 'Resource not found',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def delete_resource(resource_id):
-    from models import Resource  # Inline import to avoid circular dependency
-    resource = Resource.query.get(resource_id)
-    if not resource:
-        return jsonify({'message': 'Resource not found'}), 404
-
+    resource = Resource.query.get_or_404(resource_id)
     db.session.delete(resource)
     db.session.commit()
-    logging.info(f"Resource deleted: {resource.name}")
-    return jsonify({'message': 'Resource deleted successfully'})
+    app.logger.info(f"Resource {resource.name} deleted successfully")
+    return jsonify({'message': 'Resource deleted successfully'}), 200
 
 @app.route('/expenses', methods=['POST'])
-@jwt_required()
-@swag_from({
-    'summary': 'Record a new expense',
-    'description': 'This endpoint allows a user to record a new expense for an event.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'amount': {'type': 'number'},
-                    'description': {'type': 'string'},
-                    'event_id': {'type': 'integer'}
-                },
-                'required': ['amount', 'event_id']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Expense recorded successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def create_expense():
-    from models import Expense  # Inline import to avoid circular dependency
     data = request.get_json()
     new_expense = Expense(
         amount=data['amount'],
@@ -671,139 +388,58 @@ def create_expense():
     )
     db.session.add(new_expense)
     db.session.commit()
-    logging.info(f"Expense recorded: {new_expense.amount}")
-    return jsonify({'message': 'Expense recorded successfully'})
+    app.logger.info(f"Expense recorded: {new_expense.amount}")
+    return jsonify({'message': 'Expense recorded successfully'}), 201
+
+@app.route('/expenses', methods=['GET'])
+@jwt_required(optional=True)
+def get_all_expenses():
+    expenses = Expense.query.all()
+    app.logger.info('Fetched all expenses')
+    return jsonify([
+        {
+            'id': expense.id,
+            'amount': expense.amount,
+            'description': expense.description,
+            'event_id': expense.event_id
+        }
+        for expense in expenses
+    ]), 200
+
+@app.route('/expenses/<int:expense_id>', methods=['GET'])
+def get_expense(expense_id):
+    expense = Expense.query.get_or_404(expense_id)
+    app.logger.info(f'Expense {expense.amount} fetched')
+    return jsonify({
+        'id': expense.id,
+        'amount': expense.amount,
+        'description': expense.description,
+        'event_id': expense.event_id
+    }), 200
 
 @app.route('/expenses/<int:expense_id>', methods=['PUT'])
-@jwt_required()
-@swag_from({
-    'summary': 'Update an expense',
-    'description': 'This endpoint updates an existing expense.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'amount': {'type': 'number'},
-                    'description': {'type': 'string'}
-                },
-                'required': ['amount']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Expense updated successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        },
-        404: {
-            'description': 'Expense not found',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def update_expense(expense_id):
-    from models import Expense  # Inline import to avoid circular dependency
     data = request.get_json()
-    expense = Expense.query.get(expense_id)
-    if not expense:
-        return jsonify({'message': 'Expense not found'}), 404
-
-    expense.amount = data['amount']
+    expense = Expense.query.get_or_404(expense_id)
+    expense.amount = data.get('amount', expense.amount)
     expense.description = data.get('description', expense.description)
     db.session.commit()
-    logging.info(f"Expense updated: {expense.amount}")
-    return jsonify({'message': 'Expense updated successfully'})
+    app.logger.info(f"Expense {expense.amount} updated successfully")
+    return jsonify({'message': 'Expense updated successfully'}), 200
 
 @app.route('/expenses/<int:expense_id>', methods=['DELETE'])
-@jwt_required()
-@swag_from({
-    'summary': 'Delete an expense',
-    'description': 'This endpoint deletes an existing expense.',
-    'produces': ['application/json'],
-    'responses': {
-        200: {
-            'description': 'Expense deleted successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        },
-        404: {
-            'description': 'Expense not found',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def delete_expense(expense_id):
-    from models import Expense  # Inline import to avoid circular dependency
-    expense = Expense.query.get(expense_id)
-    if not expense:
-        return jsonify({'message': 'Expense not found'}), 404
-
+    expense = Expense.query.get_or_404(expense_id)
     db.session.delete(expense)
     db.session.commit()
-    logging.info(f"Expense deleted: {expense.amount}")
-    return jsonify({'message': 'Expense deleted successfully'})
+    app.logger.info(f"Expense {expense.amount} deleted successfully")
+    return jsonify({'message': 'Expense deleted successfully'}), 200
 
 @app.route('/notifications', methods=['POST'])
-@jwt_required()
-@swag_from({
-    'summary': 'Create a new notification',
-    'description': 'This endpoint allows a user to create a new notification.',
-    'consumes': ['application/json'],
-    'produces': ['application/json'],
-    'parameters': [
-        {
-            'name': 'body',
-            'in': 'body',
-            'required': True,
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'title': {'type': 'string'},
-                    'message': {'type': 'string'}
-                },
-                'required': ['title', 'message']
-            }
-        }
-    ],
-    'responses': {
-        200: {
-            'description': 'Notification created successfully',
-            'schema': {
-                'type': 'object',
-                'properties': {
-                    'message': {'type': 'string'}
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def create_notification():
-    from models import Notification  # Inline import to avoid circular dependency
     data = request.get_json()
     new_notification = Notification(
         title=data['title'],
@@ -813,49 +449,41 @@ def create_notification():
     )
     db.session.add(new_notification)
     db.session.commit()
-    logging.info(f"Notification created: {new_notification.title} for user {new_notification.user_id}")
-    return jsonify({'message': 'Notification created successfully'})
+    app.logger.info(f"Notification {new_notification.title} created successfully")
+    return jsonify({'message': 'Notification created successfully'}), 201
 
 @app.route('/notifications', methods=['GET'])
-@jwt_required()
-@swag_from({
-    'summary': 'Get list of notifications',
-    'description': 'This endpoint returns a list of notifications for the authenticated user.',
-    'produces': ['application/json'],
-    'responses': {
-        200: {
-            'description': 'List of notifications',
-            'schema': {
-                'type': 'array',
-                'items': {
-                    'type': 'object',
-                    'properties': {
-                        'id': {'type': 'integer'},
-                        'title': {'type': 'string'},
-                        'message': {'type': 'string'},
-                        'created_at': {'type': 'string', 'format': 'date-time'}
-                    }
-                }
-            }
-        }
-    }
-})
+@jwt_required(optional=True)
 def get_notifications():
-    from models import Notification  # Inline import to avoid circular dependency
     notifications = Notification.query.filter_by(user_id=get_jwt_identity()).all()
+    app.logger.info('Fetched all notifications')
     return jsonify([{
         'id': notification.id,
         'title': notification.title,
         'message': notification.message,
         'created_at': notification.created_at.isoformat()
-    } for notification in notifications])
+    } for notification in notifications]), 200
 
-# Swagger UI setup
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.yaml'  # Ensure this path is correct or exists
-swaggerui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_URL, config={'app_name': "Event Planner App API"})
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+@app.route('/notifications/<int:notification_id>', methods=['GET'])
+def get_notification(notification_id):
+    notification = Notification.query.get_or_404(notification_id)
+    app.logger.info(f'Notification {notification.title} fetched')
+    return jsonify({
+        'id': notification.id,
+        'title': notification.title,
+        'message': notification.message,
+        'created_at': notification.created_at.isoformat()
+    }), 200
+
+@app.route('/notifications/<int:notification_id>', methods=['DELETE'])
+@jwt_required(optional=True)
+def delete_notification(notification_id):
+    notification = Notification.query.get_or_404(notification_id)
+    db.session.delete(notification)
+    db.session.commit()
+    app.logger.info(f"Notification {notification.title} deleted successfully")
+    return jsonify({'message': 'Notification deleted successfully'}), 200
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 5555))
+    app.run(host="0.0.0.0", port=port, debug=True)
