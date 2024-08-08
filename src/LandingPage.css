@@ -1,39 +1,190 @@
+/* Background and overall layout */
 .landing-container {
-    text-align: center;
-    background-color: black;
-    color: sienna;
-    height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    background: url('https://source.unsplash.com/1600x900/?events') no-repeat center center/cover;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    color: #FF7E5F; /* Sienna color for text */
+    text-align: center;
+    padding: 20px;
+    overflow-y: auto; /* Enables scrolling */
   }
   
-  .header {
-    font-size: 2em;
-    margin-bottom: 20px;
+  /* Content wrapper to manage internal spacing and background */
+  .landing-content-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.85); /* Ensures the content area has a consistent dark background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Header styling */
+  .landing-header {
+    margin-top: 30px;
+    animation: fadeInDown 1.2s ease-in-out;
+  }
+  
+  .landing-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FF7E5F; /* Sienna color for the title */
+  }
+  
+  /* Button styling with hover effects */
+  .landing-content {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+    animation: fadeInUp 1.2s ease-in-out;
   }
   
   .landing-button {
-    background-color: sienna;
-    color: black;
-    padding: 15px 30px;
-    margin: 10px;
+    background-color: #FF7E5F; /* Sienna color for the button */
     border: none;
-    border-radius: 5px;
+    color: black; /* Black text color */
+    padding: 15px 30px;
+    font-size: 1rem;
+    border-radius: 50px;
     cursor: pointer;
-    font-size: 1em;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .landing-button:hover {
-    background-color: #cc7a3d;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background-color: #D2691E; /* Darker sienna on hover */
+    color: white; /* White text on hover */
   }
   
-  .footer {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-    color: sienna;
+  /* Features section styling */
+  .landing-features {
+    margin-top: 50px;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #FF7E5F;
+  }
+  
+  .feature-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .feature-card {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px;
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Testimonials section styling */
+  .landing-testimonials {
+    margin-top: 50px;
+    animation: fadeIn 2.5s ease-in-out;
+  }
+  
+  .testimonial-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .testimonial-card {
+    background-color: rgba(255, 126, 95, 0.8); /* Sienna background */
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px;
+    color: black;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Footer styling */
+  .landing-footer {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease-in-out;
+    color: #FF7E5F; /* Sienna color for the footer */
+  }
+  
+  /* Animations */
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .landing-title {
+      font-size: 2rem;
+    }
+  
+    .landing-content {
+      flex-direction: column;
+    }
+  
+    .landing-button {
+      margin-bottom: 20px;
+    }
+  
+    .feature-cards,
+    .testimonial-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .feature-card,
+    .testimonial-card {
+      width: 100%;
+      max-width: 300px;
+    }
   }
   

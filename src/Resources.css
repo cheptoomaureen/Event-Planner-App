@@ -1,0 +1,59 @@
+.resources {
+    padding: 20px;
+  }
+  
+  .resources-header {
+    background-color: #A0522D;
+    padding: 20px;
+    color: white;
+    text-align: center;
+  }
+  
+  .resources-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .resource-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .resource-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .resource-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .resource-card {
+    background-color: rgb(14, 13, 13);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .button {
+    background-color: #A0522D;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #8B4513;
+  }
+  

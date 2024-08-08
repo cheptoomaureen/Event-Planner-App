@@ -1,0 +1,78 @@
+.events {
+  padding: 10px;
+}
+
+.events-header {
+  background-color: #A0522D;
+  padding: 5px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.events-header h1 {
+  margin: 0;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.event-form input, .event-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.event-form .button {
+  background-color: #A0522D;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.event-card {
+  background-color: #0c0c0c;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.event-card h3 {
+  margin-top: 0;
+}
+
+.event-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.event-actions .button {
+  background-color: #A0522D;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.event-actions .button:hover {
+  background-color: black;
+  color: white;
+}
