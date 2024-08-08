@@ -145,10 +145,13 @@ def delete_user(user_id):
     return jsonify({'message': 'User deleted successfully'}), 200
 
 @app.route('/events', methods=['POST'])
-@jwt_required(optional=True)
+@jwt_required(optional=True)  # Ensure that the user is logged in or token is provided
 def create_event():
     data = request.get_json()
-    current_user_id = get_jwt_identity()
+    current_user_id = get_jwt_identity()  # Retrieve the ID of the currently authenticated user
+
+    if not current_user_id:
+        return jsonify({'message': 'User not authenticated'}), 401
 
     try:
         event_date = datetime.fromisoformat(data['date'])
@@ -161,7 +164,7 @@ def create_event():
         date=event_date,
         location=data['location'],
         description=data.get('description', ''),
-        created_by=current_user_id
+        created_by=current_user_id  # Assign the current user's ID as the creator
     )
 
     db.session.add(new_event)

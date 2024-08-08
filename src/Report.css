@@ -1,0 +1,99 @@
+.report-page {
+    background-color: #333;
+    color: #FFF;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .report-header {
+    background-color: #A0522D;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+  }
+  
+  .report-header h1 {
+    margin: 0;
+    font-size: 36px;
+    color: #FFF;
+  }
+  
+  .report-header p {
+    margin: 10px 0 0;
+    font-size: 18px;
+    color: #EEE;
+  }
+  
+  .summary-section {
+    margin-top: 20px;
+  }
+  
+  .summary-box {
+    background-color: #FFF;
+    color: #333;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #A0522D;
+    font-size: 16px;
+  }
+  
+  .chart-section {
+    margin-top: 30px;
+  }
+  
+  .chart-container {
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .math-section {
+    margin-top: 30px;
+    background-color: sienna;
+    padding: 15px;
+    border-radius: 10px;
+    color: #333;
+  }
+  
+  .math-box p {
+    margin: 10px 0;
+    font-size: 18px;
+  }
+  
+  .insights-section {
+    margin-top: 30px;
+  }
+  
+  .insights-section h2 {
+    color: #A0522D;
+  }
+  
+  .insights-section ul {
+    margin: 10px ;
+    padding: 20px;
+    list-style-type: disc;
+    color: #A0522D;
+  }
+  
+  .insights-section ul li {
+    margin: 10px ;
+    font-size: 30px;
+  }
+  
+  footer {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  footer .button {
+    background-color:sienna;
+    color: rgb(15, 15, 15);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  footer .button:hover {
+    background-color: #f7f4f4;
+  }
+  

@@ -1,122 +1,127 @@
-/* HomePage.css */
+.homepage {
+  font-family: 'Arial', sans-serif;
+  color: #e9e9e9; /* Light color for text against black background */
+  padding: 20px;
+  max-width: 2000px;
+  margin: 0 auto;
+  background-color: #000; /* Full black background */
+}
 
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #000; /* Switch to black background for contrast */
-    color: #FFF;
-    margin: 0;
-    padding: 0;
+.header {
+  text-align: center;
+  padding: 10px ;
+  background: linear-gradient(135deg, sienna, #000);
+  color: white;
+  border-radius: 8px;
+}
+
+.header h1 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  animation: fadeInDown 1s ease-in-out;
+  color: sienna; /* Sienna color for heading */
+}
+
+.header p {
+  font-size: 1em;
+  margin-top: 0;
+  color: #e9e9e9; /* Light color for text */
+}
+
+.dashboard {
+  margin-top: 40px;
+}
+
+.dashboard h2 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: sienna; /* Sienna color for section heading */
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-item {
+  background: #1a1a1a; /* Dark gray for dashboard item background */
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s;
+  color: #e9e9e9; /* Light color for text */
+}
+
+.dashboard-item:hover {
+  transform: translateY(-5px);
+}
+
+.dashboard-item i {
+  font-size: 2em;
+  margin-bottom: 15px;
+  color: sienna; /* Sienna color for icons */
+}
+
+.button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: sienna; /* Sienna color for buttons */
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #7e4c32; /* Slightly darker sienna on hover */
+}
+
+.services {
+  margin-top: 60px;
+}
+
+.services h2 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: sienna; /* Sienna color for section heading */
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.service-item {
+  background: #1a1a1a; /* Dark gray for service item background */
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s;
+  color: #e9e9e9; /* Light color for text */
+}
+
+.service-item:hover {
+  transform: translateY(-5px);
+}
+
+.service-item i {
+  font-size: 2em;
+  margin-bottom: 15px;
+  color: sienna; /* Sienna color for icons */
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  .homepage {
-    padding: 20px;
-    background-color: #1A1A1A; /* Dark gray to blend with black */
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .header {
-    background-color: #A0522D; /* Sienna */
-    padding: 30px;
-    color: #FFF;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  .header h1 {
-    margin: 0;
-    font-size: 2em;
-    letter-spacing: 1.5px;
-  }
-  
-  .services {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-top: 30px;
-  }
-  
-  .service {
-    background-color: #A0522D; /* Sienna */
-    padding: 25px;
-    border-radius: 12px;
-    color: #FFF;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  .service:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  }
-  
-  .service h2 {
-    font-size: 2em;
-    margin-bottom: 15px;
-    font-weight: 600;
-  }
-  
-  .service p {
-    font-size: 1.2em;
-    line-height: 1.5;
-  }
-  
-  .dashboard {
-    margin-top: 50px;
-    padding: 30px;
-    background-color: #1A1A1A; /* Match homepage background for uniformity */
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  }
-  
-  .dashboard h2 {
-    font-size: 2.5em;
-    margin-bottom: 25px;
-    text-align: center;
-    color: #A0522D; /* Sienna */
-  }
-  
-  .dashboard-item {
-    background-color: #333; /* Darker gray for contrast with Sienna */
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .dashboard-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  }
-  
-  .dashboard-item h3 {
-    font-size: 1.8em;
-    margin-bottom: 12px;
-    color: #A0522D; /* Sienna */
-  }
-  
-  .dashboard-item p {
-    font-size: 1.2em;
-    line-height: 1.6;
-  }
-  
-  .button {
-    background-color: #A0522D; /* Sienna */
-    border: none;
-    color: #FFF;
-    padding: 12px 25px;
-    border-radius: 10px;
-    font-size: 1.2em;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .button:hover {
-    background-color: #FFF;
-    color: #A0522D; /* Sienna */
-    transform: translateY(-3px);
-  }
-  
+}
