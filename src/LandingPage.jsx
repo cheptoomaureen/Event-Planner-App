@@ -8,7 +8,7 @@ const LandingPage = () => {
     <div className="landing-container">
       <div className="landing-content-wrapper">
         <header className="landing-header">
-          <h1 className="landing-title">Welcome to the Event Planner</h1>
+          <h1 className="landing-title">Welcome to the Event Planner App</h1>
         </header>
         
         <section className="landing-content">

@@ -1,9 +1,13 @@
+body {
+  background-color: #a37261;
+}
+
 .events {
   padding: 10px;
 }
 
 .events-header {
-  background-color: #A0522D;
+  background-color: #330000;
   padding: 5px;
   color: white;
   display: flex;
@@ -22,6 +26,7 @@
   flex-direction: column;
   gap: 10px;
   margin-bottom: 20px;
+  color: #73605b;
 }
 
 .event-form input, .event-form textarea {
@@ -31,7 +36,7 @@
 }
 
 .event-form .button {
-  background-color: #A0522D;
+  background-color: #330000;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -47,7 +52,7 @@
 }
 
 .event-card {
-  background-color: #0c0c0c;
+  background-color: #73605b;
   border: 1px solid #ddd;
   padding: 20px;
   border-radius: 4px;
@@ -63,7 +68,7 @@
 }
 
 .event-actions .button {
-  background-color: #A0522D;
+  background-color: #330000;
   color: white;
   border: none;
   padding: 10px 20px;

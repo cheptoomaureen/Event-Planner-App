@@ -4,13 +4,13 @@
   padding: 20px;
   max-width: 2000px;
   margin: 0 auto;
-  background-color: #000; /* Full black background */
+  background-color: #a37261; /* Full black background */
 }
 
 .header {
   text-align: center;
   padding: 10px ;
-  background: linear-gradient(135deg, sienna, #000);
+  background:  #330000;
   color: white;
   border-radius: 8px;
 }
@@ -19,13 +19,13 @@
   font-size: 1.5em;
   margin-bottom: 10px;
   animation: fadeInDown 1s ease-in-out;
-  color: sienna; /* Sienna color for heading */
+  color: white; /* Sienna color for heading */
 }
 
 .header p {
   font-size: 1em;
   margin-top: 0;
-  color: #e9e9e9; /* Light color for text */
+  color: white; /* Light color for text */
 }
 
 .dashboard {
@@ -36,7 +36,7 @@
   text-align: center;
   font-size: 2em;
   margin-bottom: 20px;
-  color: sienna; /* Sienna color for section heading */
+  color: black; /* Sienna color for section heading */
 }
 
 .dashboard-grid {
@@ -46,12 +46,12 @@
 }
 
 .dashboard-item {
-  background: #1a1a1a; /* Dark gray for dashboard item background */
+  background: #73605B; /* Dark gray for dashboard item background */
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   transition: transform 0.3s;
-  color: #e9e9e9; /* Light color for text */
+  color: black; /* Light color for text */
 }
 
 .dashboard-item:hover {
@@ -61,22 +61,22 @@
 .dashboard-item i {
   font-size: 2em;
   margin-bottom: 15px;
-  color: sienna; /* Sienna color for icons */
+  color: black; /* Sienna color for icons */
 }
 
 .button {
   display: inline-block;
   margin-top: 15px;
   padding: 10px 20px;
-  background-color: sienna; /* Sienna color for buttons */
-  color: white;
+  background-color: #3D5B59; /* Sienna color for buttons */
+  color: black;
   text-decoration: none;
   border-radius: 4px;
   transition: background-color 0.3s;
 }
 
 .button:hover {
-  background-color: #7e4c32; /* Slightly darker sienna on hover */
+  background-color: #3D5B59; /* Slightly darker sienna on hover */
 }
 
 .services {
@@ -87,7 +87,7 @@
   text-align: center;
   font-size: 2em;
   margin-bottom: 20px;
-  color: sienna; /* Sienna color for section heading */
+  color: black; /* Sienna color for section heading */
 }
 
 .services-grid {
@@ -97,12 +97,12 @@
 }
 
 .service-item {
-  background: #1a1a1a; /* Dark gray for service item background */
+  background: #73605B; /* Dark gray for service item background */
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   transition: transform 0.3s;
-  color: #e9e9e9; /* Light color for text */
+  color: black; /* Light color for text */
 }
 
 .service-item:hover {
@@ -112,7 +112,7 @@
 .service-item i {
   font-size: 2em;
   margin-bottom: 15px;
-  color: sienna; /* Sienna color for icons */
+  color: black; /* Sienna color for icons */
 }
 
 @keyframes fadeInDown {

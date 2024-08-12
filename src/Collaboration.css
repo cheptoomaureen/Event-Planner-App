@@ -4,13 +4,13 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #000; /* Full black background */
+  background-color: #a37261; /* Full black background */
 }
 
 .collaboration-header {
   text-align: center;
   padding: 20px 0;
-  background: linear-gradient(135deg, sienna, #000);
+  background: #330000;
   color: white;
   border-radius: 8px;
 }
@@ -19,7 +19,7 @@
   font-size: 1.8em;
   margin-bottom: 10px;
   animation: fadeInDown 1s ease-in-out;
-  color: sienna; /* Sienna color for heading */
+  color: white; /* Sienna color for heading */
 }
 
 .collaboration-header p {
@@ -40,7 +40,7 @@
 .event-details h2,
 .document-sharing h2,
 .real-time-communication h2 {
-  color: sienna; /* Sienna color for section titles */
+  color: white; /* Sienna color for section titles */
   margin-bottom: 10px;
 }
 
@@ -77,14 +77,14 @@
 .message-list li {
   margin-bottom: 10px;
   padding: 10px;
-  background: #1a1a1a;
+  background: #73605B;
   border-radius: 4px;
 }
 
 .button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: sienna;
+  background-color: #330000;
   color: white;
   text-decoration: none;
   border-radius: 4px;

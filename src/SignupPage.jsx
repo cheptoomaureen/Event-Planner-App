@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginSignupPage.css';
 
@@ -12,10 +12,9 @@ const SignupPage = () => {
     event.preventDefault();
 
     const signupUrl = 'http://localhost:5555/auth/register';
-    const loginUrl = 'http://localhost:5555/auth/login';
     const signupData = { username, email, password };
 
-    // First, sign up the user
+    // Sign up the user
     fetch(signupUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -23,32 +22,20 @@ const SignupPage = () => {
     })
       .then((response) => {
         if (response.ok) {
-          // If signup is successful, automatically log the user in
-          return fetch(loginUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-          });
+          alert('Registration successful. Please log in to continue.');
+          navigate('/login');  // Redirect to the login page after successful registration
         } else {
           throw new Error('Error during signup: ' + response.status);
         }
-      })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Error during login: ' + response.status);
-        }
-      })
-      .then((data) => {
-        localStorage.setItem('token', data.token);
-        alert('Registration and login successful. Welcome to Event Planner!');
-        navigate('/home');
       })
       .catch((error) => {
         console.error('Error:', error);
         alert('An error occurred. Please try again later.');
       });
+  };
+
+  const goToLoginPage = () => {
+    navigate('/login');
   };
 
   return (
@@ -90,6 +77,9 @@ const SignupPage = () => {
           <button type="submit">Sign Up</button>
         </form>
       </section>
+      <footer>
+        <button onClick={goToLoginPage}>Go to Login Page</button>
+      </footer>
     </div>
   );
 };

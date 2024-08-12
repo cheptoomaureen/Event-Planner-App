@@ -3,23 +3,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 120vh;
     background: url('https://source.unsplash.com/1600x900/?events') no-repeat center center/cover;
-    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    background-color: #a37261; /* Dark overlay */
     color: #FF7E5F; /* Sienna color for text */
     text-align: center;
-    padding: 20px;
+    padding: 80px;
     overflow-y: auto; /* Enables scrolling */
   }
   
   /* Content wrapper to manage internal spacing and background */
   .landing-content-wrapper {
     width: 100%;
-    max-width: 1200px;
+    max-width: 2200px;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.85); /* Ensures the content area has a consistent dark background */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    background-color: #a37261; /* Ensures the content area has a consistent dark background */
+    border-radius: 0px;
+    box-shadow: #73605B;
   }
   
   /* Header styling */
@@ -29,9 +29,9 @@
   }
   
   .landing-title {
-    font-size: 2.5rem;
+    font-size: 4rem;
     font-weight: bold;
-    color: #FF7E5F; /* Sienna color for the title */
+    color: #330000; /* Sienna color for the title */
   }
   
   /* Button styling with hover effects */
@@ -43,9 +43,9 @@
   }
   
   .landing-button {
-    background-color: #FF7E5F; /* Sienna color for the button */
+    background-color: #330000; /* Sienna color for the button */
     border: none;
-    color: black; /* Black text color */
+    color: white; /* Black text color */
     padding: 15px 30px;
     font-size: 1rem;
     border-radius: 50px;
@@ -57,7 +57,7 @@
   .landing-button:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    background-color: #D2691E; /* Darker sienna on hover */
+    background-color: #a37261; /* Darker sienna on hover */
     color: white; /* White text on hover */
   }
   
@@ -70,7 +70,7 @@
   .section-title {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: #FF7E5F;
+    color: white;
   }
   
   .feature-cards {
@@ -81,7 +81,7 @@
   }
   
   .feature-card {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #73605B;
     padding: 20px;
     border-radius: 10px;
     width: 250px;
@@ -108,11 +108,11 @@
   }
   
   .testimonial-card {
-    background-color: rgba(255, 126, 95, 0.8); /* Sienna background */
+    background-color: #73605B; /* Sienna background */
     padding: 20px;
     border-radius: 10px;
     width: 250px;
-    color: black;
+    color: white;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
@@ -126,7 +126,7 @@
     margin-top: 30px;
     margin-bottom: 20px;
     animation: fadeIn 2s ease-in-out;
-    color: #FF7E5F; /* Sienna color for the footer */
+    color: white; /* Sienna color for the footer */
   }
   
   /* Animations */
