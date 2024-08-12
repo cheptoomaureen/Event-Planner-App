@@ -486,6 +486,31 @@ def delete_notification(notification_id):
     db.session.commit()
     app.logger.info(f"Notification {notification.title} deleted successfully")
     return jsonify({'message': 'Notification deleted successfully'}), 200
+# Endpoint to post a new document
+@app.route('/documents', methods=['POST'])
+def post_document():
+    data = request.json
+    new_document = {
+        'userId': data['userId'],
+        'document': data['document'],
+        'id': len(documents) + 1
+    }
+    documents.append(new_document)
+    return jsonify(new_document), 201
+
+# Endpoint to get event details
+@app.route('/event-details', methods=['GET'])
+def get_event_details():
+    return jsonify(event_details)
+
+# Endpoint to update event details
+@app.route('/event-details', methods=['POST'])
+def post_event_details():
+    global event_details
+    data = request.json
+    event_details = data['details']
+    return jsonify({"message": "Event details updated", "eventDetails": event_details}), 200
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5555))

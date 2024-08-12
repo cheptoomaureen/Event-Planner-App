@@ -1,9 +1,20 @@
+.task-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.task-actions .button {
+  flex: 1;
+}
+
 .tasks {
-    padding: 20px;
+    padding: 10px;
   }
   
   .tasks-header {
-    background-color: #A0522D;
+    background-color: #330000;
     padding: 20px;
     color: white;
     text-align: center;
@@ -12,7 +23,7 @@
   .tasks-content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
   }
   
   .task-form {
@@ -35,7 +46,7 @@
   }
   
   .task-card {
-    background-color: rgb(19, 18, 18);
+    background-color: #73605b;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -44,7 +55,7 @@
   }
   
   .button {
-    background-color: #A0522D;
+    background-color: #330000;
     color: white;
     padding: 10px 20px;
     text-align: center;
@@ -55,6 +66,6 @@
   }
   
   .button:hover {
-    background-color: #8B4513;
+    background-color: #330000;
   }
   

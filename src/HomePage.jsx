@@ -76,6 +76,10 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      <footer>
+        <Link to="/" className="button">Logout</Link>
+      </footer>
     </div>
   );
 };

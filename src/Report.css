@@ -1,12 +1,12 @@
 .report-page {
-    background-color: #333;
+    background-color: #a37261;
     color: #FFF;
     font-family: Arial, sans-serif;
     padding: 20px;
   }
   
   .report-header {
-    background-color: #A0522D;
+    background-color: #330000;
     padding: 20px;
     text-align: center;
     border-radius: 10px;
@@ -30,10 +30,10 @@
   
   .summary-box {
     background-color: #FFF;
-    color: #333;
+    color: #73605B;
     padding: 15px;
     border-radius: 10px;
-    border: 2px solid #A0522D;
+    border: 2px solid #330000;
     font-size: 16px;
   }
   
@@ -42,14 +42,14 @@
   }
   
   .chart-container {
-    background-color: #FFF;
+    background-color: white;
     padding: 20px;
     border-radius: 10px;
   }
   
   .math-section {
     margin-top: 30px;
-    background-color: sienna;
+    background-color: #330000;
     padding: 15px;
     border-radius: 10px;
     color: #333;
@@ -65,14 +65,14 @@
   }
   
   .insights-section h2 {
-    color: #A0522D;
+    color: white;
   }
   
   .insights-section ul {
     margin: 10px ;
     padding: 20px;
     list-style-type: disc;
-    color: #A0522D;
+    color: white;
   }
   
   .insights-section ul li {
@@ -86,8 +86,8 @@
   }
   
   footer .button {
-    background-color:sienna;
-    color: rgb(15, 15, 15);
+    background-color:#330000;
+    color: white;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;

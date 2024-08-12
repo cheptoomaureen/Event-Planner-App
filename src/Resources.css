@@ -1,9 +1,20 @@
+.resource-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.resource-actions .button {
+  flex: 1;
+}
+
 .resources {
     padding: 20px;
   }
   
   .resources-header {
-    background-color: #A0522D;
+    background-color: #330000;
     padding: 20px;
     color: white;
     text-align: center;
@@ -34,7 +45,7 @@
   }
   
   .resource-card {
-    background-color: rgb(14, 13, 13);
+    background-color: #73605B;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -43,7 +54,7 @@
   }
   
   .button {
-    background-color: #A0522D;
+    background-color: #330000;
     color: white;
     padding: 10px 20px;
     text-align: center;
@@ -54,6 +65,6 @@
   }
   
   .button:hover {
-    background-color: #8B4513;
+    background-color: #330000;
   }
   
