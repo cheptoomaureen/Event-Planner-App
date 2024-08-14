@@ -15,11 +15,13 @@
   
   .resources-header {
     background-color: #a37261;
-    padding: 20px;
+    padding: 10px;
     color: #330000;
     text-align: center;
   }
-  
+  .resources-header h1{
+    font-size: 50px;
+  }
   .resources-content {
     display: flex;
     flex-direction: column;

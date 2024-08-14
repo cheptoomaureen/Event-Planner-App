@@ -4,7 +4,9 @@
   color: #330000;
   text-align: center;
 }
-
+.tasks-header h1{
+  font-size: 50px;
+}
 .task-actions {
   display: flex;
   justify-content: space-between;
