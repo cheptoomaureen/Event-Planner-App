@@ -127,7 +127,18 @@ const Resources = () => {
       <header className="resources-header">
         <h1>Resource Management</h1>
       </header>
+      
       <section className="resources-content">
+        <form onSubmit={handleSubmit} className="resource-form">
+          <input type="text" name="name" placeholder="Resource Name" value={newResource.name} onChange={handleChange} required />
+          <input type="text" name="type" placeholder="Type" value={newResource.type} onChange={handleChange} required />
+          <input type="text" name="status" placeholder="Status" value={newResource.status} onChange={handleChange} required />
+          <input type="text" name="event_id" placeholder="Event ID" value={newResource.event_id} onChange={handleChange} required />
+          <input type="text" name="reserved_by" placeholder="Reserved By" value={newResource.reserved_by} onChange={handleChange} />
+          <input type="number" name="cost" placeholder="Cost" value={newResource.cost} onChange={handleChange} required />
+          <button type="submit" className="button">{isEditing ? 'Update Resource' : 'Create Resource'}</button>
+        </form>
+
         <div className="resource-list">
           {resources.map(resource => (
             <div key={resource.id} className="resource-card">
@@ -148,15 +159,7 @@ const Resources = () => {
             </div>
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="resource-form">
-          <input type="text" name="name" placeholder="Resource Name" value={newResource.name} onChange={handleChange} required />
-          <input type="text" name="type" placeholder="Type" value={newResource.type} onChange={handleChange} required />
-          <input type="text" name="status" placeholder="Status" value={newResource.status} onChange={handleChange} required />
-          <input type="text" name="event_id" placeholder="Event ID" value={newResource.event_id} onChange={handleChange} required />
-          <input type="text" name="reserved_by" placeholder="Reserved By" value={newResource.reserved_by} onChange={handleChange} />
-          <input type="number" name="cost" placeholder="Cost" value={newResource.cost} onChange={handleChange} required />
-          <button type="submit" className="button">{isEditing ? 'Update Resource' : 'Create Resource'}</button>
-        </form>
+
         <footer>
           <input 
             type="number" 

@@ -108,7 +108,18 @@ const Tasks = () => {
       <header className="tasks-header">
         <h1>Task Management</h1>
       </header>
+      
       <section className="tasks-content">
+        <form onSubmit={handleSubmit} className="task-form">
+          <input type="text" name="title" placeholder="Task Title" value={newTask.title} onChange={handleChange} required />
+          <textarea name="description" placeholder="Description" value={newTask.description} onChange={handleChange} required></textarea>
+          <input type="date" name="deadline" placeholder="Deadline" value={newTask.deadline} onChange={handleChange} required />
+          <input type="text" name="priority" placeholder="Priority" value={newTask.priority} onChange={handleChange} required />
+          <input type="text" name="status" placeholder="Status" value={newTask.status} onChange={handleChange} required />
+          <input type="text" name="event_id" placeholder="Event ID" value={newTask.event_id} onChange={handleChange} required />
+          <input type="text" name="assigned_to" placeholder="Assigned To" value={newTask.assigned_to} onChange={handleChange} required />
+          <button type="submit" className="button">{isEditing ? 'Update Task' : 'Create Task'}</button>
+        </form>
         <div className="task-list">
           {tasks.map(task => (
             <div key={task.id} className="task-card">
@@ -126,22 +137,13 @@ const Tasks = () => {
             </div>
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="task-form">
-          <input type="text" name="title" placeholder="Task Title" value={newTask.title} onChange={handleChange} required />
-          <textarea name="description" placeholder="Description" value={newTask.description} onChange={handleChange} required></textarea>
-          <input type="date" name="deadline" placeholder="Deadline" value={newTask.deadline} onChange={handleChange} required />
-          <input type="text" name="priority" placeholder="Priority" value={newTask.priority} onChange={handleChange} required />
-          <input type="text" name="status" placeholder="Status" value={newTask.status} onChange={handleChange} required />
-          <input type="text" name="event_id" placeholder="Event ID" value={newTask.event_id} onChange={handleChange} required />
-          <input type="text" name="assigned_to" placeholder="Assigned To" value={newTask.assigned_to} onChange={handleChange} required />
-          <button type="submit" className="button">{isEditing ? 'Update Task' : 'Create Task'}</button>
-        </form>
         <footer>
           <Link to="/home" className="button">Back to Home</Link>
         </footer>
       </section>
     </div>
   );
+  
 };
 
 export default Tasks;

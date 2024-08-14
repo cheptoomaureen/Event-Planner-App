@@ -126,6 +126,18 @@ const Events = () => {
         <h1>Event Management</h1>
       </header>
       <section className="events-content">
+        {/* Moved the form before the event list */}
+        <form onSubmit={handleSubmit} className="event-form">
+          <input type="text" name="title" placeholder="Event Title" value={newEvent.title} onChange={handleChange} required />
+          <input type="date" name="date" placeholder="Date" value={newEvent.date} onChange={handleChange} required />
+          <input type="time" name="time" placeholder="Time" value={newEvent.time} onChange={handleChange} required />
+          <input type="text" name="location" placeholder="Location" value={newEvent.location} onChange={handleChange} required />
+          <textarea name="description" placeholder="Description" value={newEvent.description} onChange={handleChange} required></textarea>
+          <input type="text" name="participants" placeholder="Participants" value={newEvent.participants} onChange={handleChange} required />
+          <button type="submit" className="button">{isEditing ? 'Update Event' : 'Create Event'}</button>
+        </form>
+        
+        {/* Event list moved after the form */}
         <div className="event-list">
           {events.map(event => (
             <div key={event.id} className="event-card">
@@ -141,15 +153,6 @@ const Events = () => {
             </div>
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="event-form">
-          <input type="text" name="title" placeholder="Event Title" value={newEvent.title} onChange={handleChange} required />
-          <input type="date" name="date" placeholder="Date" value={newEvent.date} onChange={handleChange} required />
-          <input type="time" name="time" placeholder="Time" value={newEvent.time} onChange={handleChange} required />
-          <input type="text" name="location" placeholder="Location" value={newEvent.location} onChange={handleChange} required />
-          <textarea name="description" placeholder="Description" value={newEvent.description} onChange={handleChange} required></textarea>
-          <input type="text" name="participants" placeholder="Participants" value={newEvent.participants} onChange={handleChange} required />
-          <button type="submit" className="button">{isEditing ? 'Update Event' : 'Create Event'}</button>
-        </form>
         <Link to="/home" className="button">Back to Home</Link>
       </section>
     </div>

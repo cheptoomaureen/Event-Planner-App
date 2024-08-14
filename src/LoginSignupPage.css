@@ -1,59 +1,69 @@
 .container {
-    text-align: center;
-    background-color: black;
-    color: sienna;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  header {
-    font-size: 2em;
-    margin-bottom: 20px;
-  }
-  
-  form {
-    background-color: #333;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(160, 82, 45, 0.5);
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 1.2em;
-  }
-  
-  input {
-    padding: 10px;
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 5px;
-    width: 80%;
-  }
-  
-  button {
-    background-color: sienna;
-    color: black;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-  }
-  
-  button:hover {
-    background-color: #cc7a3d;
-  }
-  
-  .footer {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-    color: sienna;
-  }
-  
+  text-align: center;
+  background-color: #73605b;
+  color: #330000;
+  height: 100vh;
+  width: 70vw;  /* Slightly increase width */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;  /* Add padding to create space around the content */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+  border-radius: 10px;  /* Round the container's corners */
+  margin: 5vh auto;  /* Center the container with some margin */
+}
+
+header {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+form {
+  background-color: #73605b;
+  padding: 40px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Softer shadow effect */
+  width: 40vw;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  width: 80%;
+}
+
+button {
+  background-color: #330000;
+  color: white;  /* Change text color to white for better contrast */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: #550000;  /* Slightly lighter on hover */
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: #330000;
+  background-color: #73605b;  /* Match the container background */
+  padding: 10px 0;  /* Add padding for better spacing */
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);  /* Add shadow to make the footer stand out */
+  border-top-left-radius: 10px;  /* Round the top corners of the footer */
+  border-top-right-radius: 10px;
+}
