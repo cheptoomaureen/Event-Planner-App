@@ -93,6 +93,13 @@ const Budget = () => {
         <h1>Budget Planning and Expense Tracking</h1>
       </header>
       <section className="budgets-content">
+        <form onSubmit={handleSubmit} className="budget-form">
+          <input type="number" name="amount" placeholder="Amount" value={newBudget.amount} onChange={handleChange} required />
+          <textarea name="description" placeholder="Description" value={newBudget.description} onChange={handleChange} required></textarea>
+          <input type="text" name="event_id" placeholder="Event ID" value={newBudget.event_id} onChange={handleChange} required />
+          <button type="submit" className="button">{isEditing ? 'Update Budget' : 'Create Budget'}</button>
+        </form>
+
         <div className="budget-list">
           {budgets.map(budget => (
             <div key={budget.id} className="budget-card">
@@ -106,12 +113,6 @@ const Budget = () => {
             </div>
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="budget-form">
-          <input type="number" name="amount" placeholder="Amount" value={newBudget.amount} onChange={handleChange} required />
-          <textarea name="description" placeholder="Description" value={newBudget.description} onChange={handleChange} required></textarea>
-          <input type="text" name="event_id" placeholder="Event ID" value={newBudget.event_id} onChange={handleChange} required />
-          <button type="submit" className="button">{isEditing ? 'Update Budget' : 'Create Budget'}</button>
-        </form>
         <footer>
           <Link to="/home" className="button">Back to Home</Link>
         </footer>

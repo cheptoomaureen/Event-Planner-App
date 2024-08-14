@@ -1,3 +1,10 @@
+.tasks-header {
+  background-color: #a37261;
+  padding: 10px; /* Reduced padding to minimize idle space */
+  color: #330000;
+  text-align: center;
+}
+
 .task-actions {
   display: flex;
   justify-content: space-between;
@@ -14,9 +21,9 @@
   }
   
   .tasks-header {
-    background-color: #330000;
+    background-color: #a37261;
     padding: 20px;
-    color: white;
+    color: #330000;
     text-align: center;
   }
   
