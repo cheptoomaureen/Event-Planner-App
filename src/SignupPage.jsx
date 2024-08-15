@@ -14,7 +14,6 @@ const SignupPage = () => {
     const signupUrl = 'http://localhost:5555/auth/register';
     const signupData = { username, email, password };
 
-    // Sign up the user
     fetch(signupUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -23,7 +22,7 @@ const SignupPage = () => {
       .then((response) => {
         if (response.ok) {
           alert('Registration successful. Please log in to continue.');
-          navigate('/login');  // Redirect to the login page after successful registration
+          navigate('/login');
         } else {
           throw new Error('Error during signup: ' + response.status);
         }
@@ -44,7 +43,7 @@ const SignupPage = () => {
         <h1>Sign Up</h1>
       </header>
       <section>
-        <form className="signup" onSubmit={handleSignup}>
+        <form onSubmit={handleSignup}>
           <label htmlFor="username">Name:</label>
           <input
             type="text"

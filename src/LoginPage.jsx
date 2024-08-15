@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginSignupPage.css';
 
@@ -42,7 +42,7 @@ const LoginPage = () => {
         <h1>Login</h1>
       </header>
       <section>
-        <form className="login" onSubmit={handleLogin}>
+        <form onSubmit={handleLogin}>
           <label htmlFor="email">Email:</label>
           <input
             type="email"
