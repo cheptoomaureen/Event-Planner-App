@@ -1,118 +1,122 @@
 .homepage {
   font-family: 'Arial', sans-serif;
-  color: #e9e9e9; /* Light color for text against black background */
+  color: #e9e9e9; /* Light color for text against the background */
   padding: 20px;
-  max-width: 2000px;
+  max-width: 1400px; /* Reduced max-width for better spacing and readability */
   margin: 0 auto;
-  background-color: #a37261; /* Full black background */
+  background-color: #a37261; /* Subtle background color */
 }
 
 .header {
   text-align: center;
-  padding: 10px ;
-  background:  #330000;
+  padding: 20px; /* Increased padding for a more balanced header */
+  background: #330000;
   color: white;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .header h1 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+  font-size: 2em; /* Slightly larger font for the heading */
+  margin-bottom: 15px; /* Increased spacing below the heading */
   animation: fadeInDown 1s ease-in-out;
-  color: white; /* Sienna color for heading */
+  color: white;
 }
 
 .header p {
-  font-size: 1em;
+  font-size: 1.2em; /* Slightly larger font for subtext */
   margin-top: 0;
-  color: white; /* Light color for text */
+  color: white;
 }
 
 .dashboard {
-  margin-top: 40px;
+  margin-top: 50px; /* Increased top margin for better separation */
 }
 
 .dashboard h2 {
   text-align: center;
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: black; /* Sienna color for section heading */
+  font-size: 2.2em; /* Slightly larger section heading */
+  margin-bottom: 30px; /* Increased bottom margin for better spacing */
+  color: black;
 }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly wider columns */
+  gap: 30px; /* Increased gap for a more spacious feel */
 }
 
 .dashboard-item {
-  background: #73605B; /* Dark gray for dashboard item background */
-  padding: 20px;
-  border-radius: 8px;
+  background: transparent; /* Fully transparent background */
+  padding: 25px; /* Increased padding for a more substantial look */
+  border-radius: 10px; /* Increased border-radius for smoother edges */
   text-align: center;
-  transition: transform 0.3s;
-  color: black; /* Light color for text */
+  transition: transform 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
+  color: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .dashboard-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-7px); /* Slightly more pronounced hover effect */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
 .dashboard-item i {
-  font-size: 2em;
-  margin-bottom: 15px;
-  color: black; /* Sienna color for icons */
+  font-size: 2.2em; /* Slightly larger icon size */
+  margin-bottom: 20px; /* Increased margin below icons */
+  color: black;
 }
 
 .button {
   display: inline-block;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #3D5B59; /* Sienna color for buttons */
+  margin-top: 20px; /* Increased margin for better spacing */
+  padding: 12px 24px; /* Increased padding for a more substantial button */
+  background-color: #3D5B59;
   color: black;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: background-color 0.3s;
 }
 
 .button:hover {
-  background-color: #3D5B59; /* Slightly darker sienna on hover */
+  background-color: #3D5B59;
 }
 
 .services {
-  margin-top: 60px;
+  margin-top: 70px; /* Increased top margin for better separation */
 }
 
 .services h2 {
   text-align: center;
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: black; /* Sienna color for section heading */
+  font-size: 2.2em;
+  margin-bottom: 30px; /* Increased bottom margin for better spacing */
+  color: black;
 }
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly wider columns */
+  gap: 30px; /* Increased gap for a more spacious feel */
 }
 
 .service-item {
-  background: #73605B; /* Dark gray for service item background */
-  padding: 20px;
-  border-radius: 8px;
+  background: transparent; /* Fully transparent background */
+  padding: 25px; /* Increased padding for a more substantial look */
+  border-radius: 10px; /* Increased border-radius for smoother edges */
   text-align: center;
-  transition: transform 0.3s;
-  color: black; /* Light color for text */
+  transition: transform 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
+  color: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .service-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-7px); /* Slightly more pronounced hover effect */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
 .service-item i {
-  font-size: 2em;
-  margin-bottom: 15px;
-  color: black; /* Sienna color for icons */
+  font-size: 2.2em; /* Slightly larger icon size */
+  margin-bottom: 20px; /* Increased margin below icons */
+  color: black;
 }
 
 @keyframes fadeInDown {
