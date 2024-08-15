@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-
-=======
 alembic==1.13.2
 attrs==23.2.0
 blinker==1.8.2
@@ -34,4 +31,4 @@ SQLAlchemy==2.0.31
 typing_extensions==4.12.2
 Werkzeug==3.0.3
 zipp==3.19.2
->>>>>>> c313bb4 (requirements)
+gunicorn==20.1.0
