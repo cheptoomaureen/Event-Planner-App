@@ -34,16 +34,16 @@
 
 .task-form input,
 .task-form textarea {
-  padding: 12px; /* Increased padding for better readability */
+  padding: 12px; 
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%; /* Ensures full width within the container */
-  box-sizing: border-box; /* Includes padding in the element's total width and height */
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
 .task-form textarea {
-  height: 120px; /* Consistent height for the textarea */
-  resize: vertical; /* Allows vertical resizing only */
+  height: 120px; 
+  resize: vertical; 
 }
 
 .task-list {

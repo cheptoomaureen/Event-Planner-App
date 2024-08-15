@@ -23,53 +23,53 @@
 }
 
 .header p {
-  font-size: 1.2em; /* Slightly larger font for subtext */
+  font-size: 1.2em; 
   margin-top: 0;
   color: white;
 }
 
 .dashboard {
-  margin-top: 50px; /* Increased top margin for better separation */
+  margin-top: 50px; 
 }
 
 .dashboard h2 {
   text-align: center;
-  font-size: 2.2em; /* Slightly larger section heading */
-  margin-bottom: 30px; /* Increased bottom margin for better spacing */
+  font-size: 2.2em; 
+  margin-bottom: 30px; 
   color: black;
 }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly wider columns */
-  gap: 30px; /* Increased gap for a more spacious feel */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+  gap: 30px; 
 }
 
 .dashboard-item {
-  background: transparent; /* Fully transparent background */
-  padding: 25px; /* Increased padding for a more substantial look */
-  border-radius: 10px; /* Increased border-radius for smoother edges */
+  background: transparent; 
+  padding: 25px; 
+  border-radius: 10px; 
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
+  transition: transform 0.3s, box-shadow 0.3s; 
   color: black;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .dashboard-item:hover {
-  transform: translateY(-7px); /* Slightly more pronounced hover effect */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  transform: translateY(-7px); 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
 }
 
 .dashboard-item i {
-  font-size: 2.2em; /* Slightly larger icon size */
-  margin-bottom: 20px; /* Increased margin below icons */
+  font-size: 2.2em; 
+  margin-bottom: 20px; 
   color: black;
 }
 
 .button {
   display: inline-block;
-  margin-top: 20px; /* Increased margin for better spacing */
-  padding: 12px 24px; /* Increased padding for a more substantial button */
+  margin-top: 20px; 
+  padding: 12px 24px; 
   background-color: #3D5B59;
   color: black;
   text-decoration: none;
@@ -82,40 +82,40 @@
 }
 
 .services {
-  margin-top: 70px; /* Increased top margin for better separation */
+  margin-top: 70px; 
 }
 
 .services h2 {
   text-align: center;
   font-size: 2.2em;
-  margin-bottom: 30px; /* Increased bottom margin for better spacing */
+  margin-bottom: 30px; 
   color: black;
 }
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly wider columns */
-  gap: 30px; /* Increased gap for a more spacious feel */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+  gap: 30px; 
 }
 
 .service-item {
-  background: transparent; /* Fully transparent background */
-  padding: 25px; /* Increased padding for a more substantial look */
-  border-radius: 10px; /* Increased border-radius for smoother edges */
+  background: transparent; 
+  padding: 25px; 
+  border-radius: 10px; 
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
+  transition: transform 0.3s, box-shadow 0.3s; 
   color: black;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .service-item:hover {
-  transform: translateY(-7px); /* Slightly more pronounced hover effect */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  transform: translateY(-7px); 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
 }
 
 .service-item i {
-  font-size: 2.2em; /* Slightly larger icon size */
-  margin-bottom: 20px; /* Increased margin below icons */
+  font-size: 2.2em; 
+  margin-bottom: 20px; 
   color: black;
 }
 
