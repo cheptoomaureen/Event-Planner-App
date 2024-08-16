@@ -9,14 +9,35 @@ const Budget = () => {
     description: '',
     event_id: ''
   });
+  const [events, setEvents] = useState([]);  // State to store events
   const [isEditing, setIsEditing] = useState(false);
   const [currentBudgetId, setCurrentBudgetId] = useState(null);
 
+  // Fetch budgets on component mount
   useEffect(() => {
     fetch('http://localhost:5555/expenses')
       .then(response => response.json())
       .then(data => setBudgets(data))
       .catch(error => console.error('Error fetching budgets:', error));
+  }, []);
+
+  // Fetch events on component mount
+  useEffect(() => {
+    fetch('http://localhost:5555/events')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          setEvents(data);  // Ensure data is an array before setting it to state
+        } else {
+          console.error('Unexpected data format:', data);
+        }
+      })
+      .catch(error => console.error('Error fetching events:', error));
   }, []);
 
   const handleChange = (e) => {
@@ -96,7 +117,20 @@ const Budget = () => {
         <form onSubmit={handleSubmit} className="budget-form">
           <input type="number" name="amount" placeholder="Amount" value={newBudget.amount} onChange={handleChange} required />
           <textarea name="description" placeholder="Description" value={newBudget.description} onChange={handleChange} required></textarea>
-          <input type="text" name="event_id" placeholder="Event ID" value={newBudget.event_id} onChange={handleChange} required />
+          
+          <select name="event_id" value={newBudget.event_id} onChange={handleChange} required>
+            <option value="" disabled>Select Event</option>
+            {events.length > 0 ? (
+              events.map(event => (
+                <option key={event.id} value={event.id}>
+                  {event.name}
+                </option>
+              ))
+            ) : (
+              <option value="" disabled>No events available</option>
+            )}
+          </select>
+          
           <button type="submit" className="button">{isEditing ? 'Update Budget' : 'Create Budget'}</button>
         </form>
 

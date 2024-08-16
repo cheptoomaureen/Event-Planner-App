@@ -10,22 +10,22 @@
 .header {
   text-align: center;
   padding: 10px ;
-  background:  #330000;
-  color: white;
+  background:  #a37261;
+  color: #330000;
   border-radius: 8px;
 }
 
 .header h1 {
-  font-size: 1.5em;
+  font-size: 4em;
   margin-bottom: 10px;
   animation: fadeInDown 1s ease-in-out;
-  color: white; /* Sienna color for heading */
+  color: #330000; /* Sienna color for heading */
 }
 
 .header p {
-  font-size: 1em;
+  font-size: 1.5em;
   margin-top: 0;
-  color: white; /* Light color for text */
+  color: #330000; /* Light color for text */
 }
 
 .dashboard {
@@ -36,7 +36,7 @@
   text-align: center;
   font-size: 2em;
   margin-bottom: 20px;
-  color: black; /* Sienna color for section heading */
+  color: #330000; /* Sienna color for section heading */
 }
 
 .dashboard-grid {
@@ -46,12 +46,14 @@
 }
 
 .dashboard-item {
-  background: #73605B; /* Dark gray for dashboard item background */
+  background: #a37261; /* Dark gray for dashboard item background */
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   transition: transform 0.3s;
   color: black; /* Light color for text */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+
 }
 
 .dashboard-item:hover {
@@ -69,7 +71,7 @@
   margin-top: 15px;
   padding: 10px 20px;
   background-color: #3D5B59; /* Sienna color for buttons */
-  color: black;
+  color: white;
   text-decoration: none;
   border-radius: 4px;
   transition: background-color 0.3s;
@@ -87,7 +89,7 @@
   text-align: center;
   font-size: 2em;
   margin-bottom: 20px;
-  color: black; /* Sienna color for section heading */
+  color: #330000; /* Sienna color for section heading */
 }
 
 .services-grid {
@@ -97,12 +99,14 @@
 }
 
 .service-item {
-  background: #73605B; /* Dark gray for service item background */
+  background: #a37261; /* Dark gray for service item background */
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   transition: transform 0.3s;
   color: black; /* Light color for text */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+
 }
 
 .service-item:hover {

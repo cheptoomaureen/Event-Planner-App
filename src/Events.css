@@ -13,14 +13,17 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: center;
 
 }
 
 .events-header h1 {
   margin: 0;
   font-family:Arial, Helvetica, sans-serif;
-  
+  font-size: 4em;
+  text-align: center;
 }
+
 
 .event-form {
   display: flex;
@@ -30,10 +33,20 @@ body {
   color: #73605b;
 }
 
-.event-form input, .event-form textarea {
+.event-form input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 100%;
+  max-width: 500px;
+}
+.event-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 500px;
+  height: 120px;
 }
 
 .event-form .button {
@@ -48,15 +61,19 @@ body {
 
 .event-list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap; /* Allows wrapping to utilize available space */
   gap: 10px;
+  flex: 1; /* Ensures the list takes up the remaining space */
 }
 
 .event-card {
-  background-color: #73605b;
-  border: 1px solid #ddd;
+  background-color: #a37261;
   padding: 20px;
-  border-radius: 4px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 250px;
+  color: black;
 }
 
 .event-card h3 {

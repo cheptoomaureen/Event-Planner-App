@@ -23,14 +23,34 @@
   .budget-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
   }
   
   .budget-form input,
   .budget-form textarea {
-    padding: 10px;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .budget-form textarea {
+    height: 150px;
+    resize: vertical;
+  }
+  .budget-form select {
+    background-color:black;
+    color: white;
+    padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .budget-form select option {
+    background-color: black;
+    color: white;
   }
   
   .budget-list {
@@ -40,12 +60,13 @@
   }
   
   .budget-card {
-    background-color: #73605b;
+    background-color: #a37261;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex: 1;
     min-width: 250px;
+    color: black;
   }
   
   .button {
