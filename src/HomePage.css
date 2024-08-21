@@ -1,122 +1,122 @@
 .homepage {
   font-family: 'Arial', sans-serif;
-  color: #e9e9e9; /* Light color for text against the background */
+  color: #e9e9e9; /* Light color for text against black background */
   padding: 20px;
-  max-width: 1400px; /* Reduced max-width for better spacing and readability */
+  max-width: 2000px;
   margin: 0 auto;
-  background-color: #a37261; /* Subtle background color */
+  background-color: #a37261; /* Full black background */
 }
 
 .header {
   text-align: center;
-  padding: 20px; /* Increased padding for a more balanced header */
-  background: #330000;
-  color: white;
-  border-radius: 10px;
+  padding: 10px ;
+  background:  #a37261;
+  color: #330000;
+  border-radius: 8px;
 }
 
 .header h1 {
-  font-size: 2em; /* Slightly larger font for the heading */
-  margin-bottom: 15px; /* Increased spacing below the heading */
+  font-size: 4em;
+  margin-bottom: 10px;
   animation: fadeInDown 1s ease-in-out;
-  color: white;
+  color: #330000; /* Sienna color for heading */
 }
 
 .header p {
-  font-size: 1.2em; 
+  font-size: 1.5em;
   margin-top: 0;
-  color: white;
+  color: #330000; /* Light color for text */
 }
 
 .dashboard {
-  margin-top: 50px; 
+  margin-top: 40px;
 }
 
 .dashboard h2 {
   text-align: center;
-  font-size: 2.2em; 
-  margin-bottom: 30px; 
-  color: black;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #330000; /* Sienna color for section heading */
 }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-  gap: 30px; 
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 .dashboard-item {
-  background: transparent; 
-  padding: 25px; 
-  border-radius: 10px; 
+  background: #a37261; /* Dark gray for dashboard item background */
+  padding: 20px;
+  border-radius: 8px;
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s; 
-  color: black;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.3s;
+  color: black; /* Light color for text */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+
 }
 
 .dashboard-item:hover {
-  transform: translateY(-7px); 
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+  transform: translateY(-5px);
 }
 
 .dashboard-item i {
-  font-size: 2.2em; 
-  margin-bottom: 20px; 
-  color: black;
+  font-size: 2em;
+  margin-bottom: 15px;
+  color: black; /* Sienna color for icons */
 }
 
 .button {
   display: inline-block;
-  margin-top: 20px; 
-  padding: 12px 24px; 
-  background-color: #3D5B59;
-  color: black;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #3D5B59; /* Sienna color for buttons */
+  color: white;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 4px;
   transition: background-color 0.3s;
 }
 
 .button:hover {
-  background-color: #3D5B59;
+  background-color: #3D5B59; /* Slightly darker sienna on hover */
 }
 
 .services {
-  margin-top: 70px; 
+  margin-top: 60px;
 }
 
 .services h2 {
   text-align: center;
-  font-size: 2.2em;
-  margin-bottom: 30px; 
-  color: black;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #330000; /* Sienna color for section heading */
 }
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-  gap: 30px; 
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 .service-item {
-  background: transparent; 
-  padding: 25px; 
-  border-radius: 10px; 
+  background: #a37261; /* Dark gray for service item background */
+  padding: 20px;
+  border-radius: 8px;
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s; 
-  color: black;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.3s;
+  color: black; /* Light color for text */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+
 }
 
 .service-item:hover {
-  transform: translateY(-7px); 
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+  transform: translateY(-5px);
 }
 
 .service-item i {
-  font-size: 2.2em; 
-  margin-bottom: 20px; 
-  color: black;
+  font-size: 2em;
+  margin-bottom: 15px;
+  color: black; /* Sienna color for icons */
 }
 
 @keyframes fadeInDown {
