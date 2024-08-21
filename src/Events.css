@@ -13,12 +13,17 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: center;
+
 }
 
 .events-header h1 {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 4em;
+  text-align: center;
 }
+
 
 .event-form {
   display: flex;
@@ -35,7 +40,6 @@ body {
   width: 100%;
   max-width: 500px;
 }
-
 .event-form textarea {
   padding: 10px;
   border: 1px solid #ccc;
@@ -49,56 +53,36 @@ body {
   background-color: #330000;
   color: white;
   border: none;
-  padding: 12px 24px; /* Increased padding for a more prominent button */
+  padding: 10px 20px;
   cursor: pointer;
-  border-radius: 6px; /* Slightly larger radius for a more modern look */
+  border-radius: 4px;
   font-size: 16px;
-  max-width: 200px; /* Increased max-width for better button visibility */
-  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
-}
-
-.event-form .button:hover {
-  background-color: black;
-  transform: scale(1.05); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
 }
 
 .event-list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap; /* Allows wrapping to utilize available space */
   gap: 10px;
+  flex: 1; /* Ensures the list takes up the remaining space */
 }
 
 .event-card {
-  background-color: #73605b;
-  border: 1px solid #ddd;
+  background-color: #a37261;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 250px;
+  color: black;
 }
 
 .event-card h3 {
   margin-top: 0;
-  font-size: 1.5em;
-  color: #330000;
-}
-
-.event-card p {
-  font-size: 1em;
-  color: #e9e9e9;
-  line-height: 1.5;
-}
-
-.event-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 .event-actions {
   display: flex;
   gap: 10px;
-  margin-top: 15px;
 }
 
 .event-actions .button {
@@ -109,10 +93,9 @@ body {
   cursor: pointer;
   border-radius: 4px;
   font-size: 16px;
-  transition: background-color 0.3s, transform 0.3s;
 }
 
 .event-actions .button:hover {
   background-color: black;
-  transform: translateY(-2px);
+  color: white;
 }
