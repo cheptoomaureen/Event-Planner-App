@@ -131,8 +131,8 @@ const Tasks = () => {
               <p>Event ID: {task.event_id}</p>
               <p>Assigned To: {task.assigned_to}</p>
               <div className="task-actions">
-                <button className="button" onClick={() => handleEdit(task)}>Edit Task</button>
-                <button className="button" onClick={() => handleDelete(task.id)}>Delete Task</button>
+                <button className="button" onClick={() => handleEdit(task)}>Edit </button>
+                <button className="button" onClick={() => handleDelete(task.id)}>Delete </button>
               </div>
             </div>
           ))}
